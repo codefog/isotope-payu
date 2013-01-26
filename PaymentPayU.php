@@ -21,6 +21,16 @@ class PaymentPayU extends IsotopePayment
 {
 
 	/**
+	 * Return a list of status options
+	 * @return array
+	 */
+	public function statusOptions()
+	{
+		return array('pending', 'processing', 'complete', 'on_hold');
+	}
+
+
+	/**
 	 * Process checkout payment
 	 * @return mixed
 	 */
