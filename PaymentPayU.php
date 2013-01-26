@@ -21,6 +21,16 @@ class PaymentPayU extends IsotopePayment
 {
 
 	/**
+	 * Return a list of status options
+	 * @return array
+	 */
+	public function statusOptions()
+	{
+		return array('pending', 'processing', 'complete', 'on_hold');
+	}
+
+
+	/**
 	 * Process checkout payment
 	 * @return mixed
 	 */
@@ -86,21 +96,26 @@ class PaymentPayU extends IsotopePayment
 
 						if ($arrResponse['status'] == 'OK' && $arrResponse['trans_sig'] == $strHash && $arrResponse['trans_status'] == 99)
 						{
-							$objOrder->date_payed = time();
-
-							if (ISO_VERSION > 0.2)
+							if (!$objOrder->checkout())
 							{
-								$objOrder->checkout();
+								$this->log('PayU checkout for order ID "' . $objOrder->id . '" failed', 'PaymentPayU processPostSale()', TL_ERROR);
+								return;
 							}
 
-							$objOrder->status = 'processing';
+							// Store the payment data
+							$arrPayment = deserialize($objOrder->payment_data, true);
+							$arrPayment['POSTSALE'][] = $arrResponse;
+							$objOrder->payment_data = $arrPayment;
+
+							$objOrder->date_paid = $time;
 							$objOrder->save();
-							$this->log('PayU data accepted for order ID ' . $objOrder->id . ' (status: ' . $arrResponse['trans_status'] . ')', 'PaymentDotpay processPostSale()', TL_GENERAL);
+
+							$this->log('PayU data accepted for order ID ' . $objOrder->id . ' (status: ' . $arrResponse['trans_status'] . ')', 'PaymentPayU processPostSale()', TL_GENERAL);
 						}
 					}
 					else
 					{
-						$this->log('PayU could not connect to server', '', TL_ERROR);
+						$this->log('PayU could not connect to server', 'PaymentPayU processPostSale()', TL_ERROR);
 					}
 				}
 			}
