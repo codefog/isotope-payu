@@ -198,12 +198,61 @@ window.addEvent( \'domready\' , function() {
 
 
 	/**
-	 * Return a list of valid credit card types for this payment module
-	 * @return array
+	 * Return information or advanced features in the backend
+	 * @param integer
+	 * @return string
 	 */
-	public function getAllowedCCTypes()
+	public function backendInterface($orderId)
 	{
-		return array();
+		$objOrder = new IsotopeOrder();
+
+		if (!$objOrder->findBy('id', $orderId))
+		{
+			return parent::backendInterface($orderId);
+		}
+
+		$arrPayment = $objOrder->payment_data;
+
+		if (!is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE']))
+		{
+			return parent::backendInterface($orderId);
+		}
+
+		$arrPayment = array_pop($arrPayment['POSTSALE']);
+		ksort($arrPayment);
+		$i = 0;
+
+		$strBuffer = '
+<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['ISO_LANG']['PAY'][$this->type][0] . ')' . '</h2>
+
+<table class="tl_show">
+<tbody>';
+
+		foreach ($arrPayment as $k => $v)
+		{
+			if (is_array($v))
+			{
+				continue;
+			}
+
+			$strBuffer .= '
+  <tr>
+    <td' . ($i%2 ? '' : ' class="tl_bg"') . '><span class="tl_label">' . $k . ': </span></td>
+    <td' . ($i%2 ? '' : ' class="tl_bg"') . '>' . $v . '</td>
+  </tr>';
+
+			++$i;
+        }
+
+        $strBuffer .= '
+</tbody></table>
+</div>';
+
+		return $strBuffer;
 	}
 
 
