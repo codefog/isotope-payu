@@ -131,7 +131,7 @@ class PaymentPayU extends IsotopePayment
 	 */
 	public function checkoutForm()
 	{
-		$strProducts = '';
+		$arrProducts = array();
 		$objOrder = new IsotopeOrder();
 		$objOrder->findBy('cart_id', $this->Isotope->Cart->id);
 
@@ -152,13 +152,15 @@ class PaymentPayU extends IsotopePayment
 				$strOptions = ' (' . implode(', ', $options) . ')';
 			}
 
-			$strProducts .= sprintf('%s (SKU %s) x%s - %s', specialchars($objProduct->name . $strOptions), $objProduct->sku, $objProduct->quantity_requested, (round($objProduct->price, 2) * 100)) . "\r\n";
+			$arrProducts[] = specialchars($objProduct->name . $strOptions);
 		}
+
+		list($endTag, $startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
 
 		$time = time();
 		$session_id = $objOrder->id . '_' . uniqid();
-		list($endTag, $startScript, $endScript) = IsotopeFrontend::getElementAndScriptTags();
 		$intPrice = $this->Isotope->Cart->grandTotal * 100;
+		$strProducts = implode(', ', $arrProducts);
 		$strHash = md5($this->payu_id . ($this->debug ? 't' : '') . $session_id . $this->payu_authKey . $intPrice . $strProducts . $objOrder->uniqid . $this->Isotope->Cart->billingAddress['firstname'] . $this->Isotope->Cart->billingAddress['lastname'] . $this->Isotope->Cart->billingAddress['street_1'] . $this->Isotope->Cart->billingAddress['city'] . $this->Isotope->Cart->billingAddress['postal'] . $this->Isotope->Cart->billingAddress['country'] . $this->Isotope->Cart->billingAddress['email'] . $this->Isotope->Cart->billingAddress['phone'] . $GLOBALS['TL_LANGUAGE'] . $this->Environment->remoteAddr . $time . $this->payu_key1);
 
 		$strBuffer .= '
@@ -198,12 +200,61 @@ window.addEvent( \'domready\' , function() {
 
 
 	/**
-	 * Return a list of valid credit card types for this payment module
-	 * @return array
+	 * Return information or advanced features in the backend
+	 * @param integer
+	 * @return string
 	 */
-	public function getAllowedCCTypes()
+	public function backendInterface($orderId)
 	{
-		return array();
+		$objOrder = new IsotopeOrder();
+
+		if (!$objOrder->findBy('id', $orderId))
+		{
+			return parent::backendInterface($orderId);
+		}
+
+		$arrPayment = $objOrder->payment_data;
+
+		if (!is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE']))
+		{
+			return parent::backendInterface($orderId);
+		}
+
+		$arrPayment = array_pop($arrPayment['POSTSALE']);
+		ksort($arrPayment);
+		$i = 0;
+
+		$strBuffer = '
+<div id="tl_buttons">
+<a href="'.ampersand(str_replace('&key=payment', '', $this->Environment->request)).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['ISO_LANG']['PAY'][$this->type][0] . ')' . '</h2>
+
+<table class="tl_show">
+<tbody>';
+
+		foreach ($arrPayment as $k => $v)
+		{
+			if (is_array($v))
+			{
+				continue;
+			}
+
+			$strBuffer .= '
+  <tr>
+    <td' . ($i%2 ? '' : ' class="tl_bg"') . '><span class="tl_label">' . $k . ': </span></td>
+    <td' . ($i%2 ? '' : ' class="tl_bg"') . '>' . $v . '</td>
+  </tr>';
+
+			++$i;
+        }
+
+        $strBuffer .= '
+</tbody></table>
+</div>';
+
+		return $strBuffer;
 	}
 
 
