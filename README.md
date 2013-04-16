@@ -5,6 +5,7 @@ A payment gateway PayU for Isotope eCommerce.
 
 ### Compatibility
 - Isotope 1.3
+- Isotope 1.4
 
 ### Available languages
 - English
