@@ -161,7 +161,8 @@ class PaymentPayU extends IsotopePayment
 		$session_id = $objOrder->id . '_' . uniqid();
 		$intPrice = $this->Isotope->Cart->grandTotal * 100;
 		$strProducts = implode(', ', $arrProducts);
-		$strHash = md5($this->payu_id . ($this->debug ? 't' : '') . $session_id . $this->payu_authKey . $intPrice . $strProducts . $objOrder->uniqid . $this->Isotope->Cart->billingAddress['firstname'] . $this->Isotope->Cart->billingAddress['lastname'] . $this->Isotope->Cart->billingAddress['street_1'] . $this->Isotope->Cart->billingAddress['city'] . $this->Isotope->Cart->billingAddress['postal'] . $this->Isotope->Cart->billingAddress['country'] . $this->Isotope->Cart->billingAddress['email'] . $this->Isotope->Cart->billingAddress['phone'] . $GLOBALS['TL_LANGUAGE'] . $this->Environment->remoteAddr . $time . $this->payu_key1);
+		$objAddress = (ISO_VERSION < 1.4) ? (object) $this->Isotope->Cart->billingAddress : $this->Isotope->Cart->billingAddress;
+		$strHash = md5($this->payu_id . ($this->debug ? 't' : '') . $session_id . $this->payu_authKey . $intPrice . $strProducts . $objOrder->uniqid . $objAddress->firstname . $objAddress->lastname . $objAddress->street_1 . $objAddress->city . $objAddress->postal . $objAddress->country . $objAddress->email . $objAddress->phone . $GLOBALS['TL_LANGUAGE'] . $this->Environment->remoteAddr . $time . $this->payu_key1);
 
 		$strBuffer .= '
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_payu'][0] . '</h2>
@@ -177,14 +178,14 @@ class PaymentPayU extends IsotopePayment
 <input type="hidden" name="order_id" value="' . $objOrder->uniqid . '"' . $endTag . '
 <input type="hidden" name="amount" value="' . $intPrice . '"' . $endTag . '
 <input type="hidden" name="desc" value="' . $strProducts . '"' . $endTag . '
-<input type="hidden" name="first_name" value="' . $this->Isotope->Cart->billingAddress['firstname'] . '"' . $endTag . '
-<input type="hidden" name="last_name" value="' . $this->Isotope->Cart->billingAddress['lastname'] . '"' . $endTag . '
-<input type="hidden" name="email" value="' . $this->Isotope->Cart->billingAddress['email'] . '"' . $endTag . '
-<input type="hidden" name="street" value="' . $this->Isotope->Cart->billingAddress['street_1'] . '"' . $endTag . '
-<input type="hidden" name="post_code" value="' . $this->Isotope->Cart->billingAddress['postal'] . '"' . $endTag . '
-<input type="hidden" name="city" value="' . $this->Isotope->Cart->billingAddress['city'] . '"' . $endTag . '
-<input type="hidden" name="country" value="' . $this->Isotope->Cart->billingAddress['country'] . '"' . $endTag . '
-<input type="hidden" name="phone" value="' . $this->Isotope->Cart->billingAddress['phone'] . '"' . $endTag . '
+<input type="hidden" name="first_name" value="' . $objAddress->firstname . '"' . $endTag . '
+<input type="hidden" name="last_name" value="' . $objAddress->lastname . '"' . $endTag . '
+<input type="hidden" name="email" value="' . $objAddress->email . '"' . $endTag . '
+<input type="hidden" name="street" value="' . $objAddress->street_1 . '"' . $endTag . '
+<input type="hidden" name="post_code" value="' . $objAddress->postal . '"' . $endTag . '
+<input type="hidden" name="city" value="' . $objAddress->city . '"' . $endTag . '
+<input type="hidden" name="country" value="' . $objAddress->country . '"' . $endTag . '
+<input type="hidden" name="phone" value="' . $objAddress->phone . '"' . $endTag . '
 <input type="hidden" name="language" value="' . $GLOBALS['TL_LANGUAGE'] . '"' . $endTag . '
 <input type="submit" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_payu'][2]) . '"' . $endTag . '
 </form>
