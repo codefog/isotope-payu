@@ -1,6 +1,14 @@
 isotope_payu Changelog
 ======================
 
+Version 1.1.3 stable (2013-??-??)
+---------------------------------
+
+### Improved
+- Updated the readme file
+- Updated the copyright information
+
+
 Version 1.1.2 stable (2013-04-16)
 ---------------------------------
 
