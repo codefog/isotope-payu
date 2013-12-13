@@ -106,8 +106,8 @@ class PaymentPayU extends IsotopePayment
 							$arrPayment = deserialize($objOrder->payment_data, true);
 							$arrPayment['POSTSALE'][] = $arrResponse;
 							$objOrder->payment_data = $arrPayment;
-
 							$objOrder->date_paid = $time;
+                            $objOrder->updateOrderStatus($this->new_order_status);
 							$objOrder->save();
 
 							$this->log('PayU data accepted for order ID ' . $objOrder->id . ' (status: ' . $arrResponse['trans_status'] . ')', 'PaymentPayU processPostSale()', TL_GENERAL);
