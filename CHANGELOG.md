@@ -1,6 +1,13 @@
 isotope_payu Changelog
 ======================
 
+Version 1.1.4 stable (2013-12-13)
+---------------------------------
+
+### Fixed
+- Fixed the order status
+
+
 Version 1.1.3 stable (2013-09-16)
 ---------------------------------
 
