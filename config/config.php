@@ -3,10 +3,10 @@
 /**
  * isotope_payu extension for Contao Open Source CMS
  *
- * Copyright (C) 2013 Codefog Ltd
+ * Copyright (C) 2013 Codefog
  *
  * @package isotope_payu
- * @author  Codefog Ltd <http://codefog.pl>
+ * @author  Codefog <http://codefog.pl>
  * @author  Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  * @license LGPL
  */
@@ -15,11 +15,11 @@
 /**
  * Extension version
  */
-@define('ISOTOPE_PAYU_VERSION', '1.1');
-@define('ISOTOPE_PAYU_BUILD', '4');
+@define('ISOTOPE_PAYU_VERSION', '2.0');
+@define('ISOTOPE_PAYU_BUILD', '0');
 
 
 /**
- * Payment modules
+ * Payment methods
  */
-$GLOBALS['ISO_PAY']['payu'] = 'PaymentPayU';
+\Isotope\Model\Payment::registerModelType('payu', 'Isotope\Model\Payment\PayU');

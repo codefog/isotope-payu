@@ -13,6 +13,15 @@
 
 
 /**
- * Extension folder
+ * Register PSR-0 namespace
  */
-$GLOBALS['TL_LANG']['MOD']['isotope_payu'] = array('Isotope eCommerce: PayU payment gateway');
+NamespaceClassLoader::add('Isotope', 'system/modules/isotope_payu/library');
+
+
+/**
+ * Register the templates
+ */
+TemplateLoader::addFiles(array
+(
+    'iso_payment_payu' => 'system/modules/isotope_payu/templates/payment'
+));
