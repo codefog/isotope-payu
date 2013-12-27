@@ -3,10 +3,10 @@
 /**
  * isotope_payu extension for Contao Open Source CMS
  *
- * Copyright (C) 2013 Codefog Ltd
+ * Copyright (C) 2013 Codefog
  *
  * @package isotope_payu
- * @author  Codefog Ltd <http://codefog.pl>
+ * @author  Codefog <http://codefog.pl>
  * @author  Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  * @license LGPL
  */
@@ -15,7 +15,7 @@
 /**
  * Payment modules
  */
-$GLOBALS['ISO_LANG']['PAY']['payu'] = array('PayU');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.payu'] = array('PayU', 'Płatności przez PayU');
 
 
 /**

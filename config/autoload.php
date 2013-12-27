@@ -13,13 +13,15 @@
 
 
 /**
- * Extension version
+ * Register PSR-0 namespace
  */
-@define('ISOTOPE_PAYU_VERSION', '1.1');
-@define('ISOTOPE_PAYU_BUILD', '4');
+NamespaceClassLoader::add('Isotope', 'system/modules/isotope_payu/library');
 
 
 /**
- * Payment methods
+ * Register the templates
  */
-\Isotope\Model\Payment::registerModelType('payu', 'Isotope\Model\Payment\PayU');
+TemplateLoader::addFiles(array
+(
+    'iso_payment_payu' => 'system/modules/isotope_payu/templates/payment'
+));

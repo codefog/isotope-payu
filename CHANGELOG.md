@@ -1,6 +1,13 @@
 isotope_payu Changelog
 ======================
 
+Version 2.0.0 stable (2013-??-??)
+---------------------------------
+
+### Improved
+- Extension is now compatible with Isotope 2
+
+
 Version 1.1.4 stable (2013-12-13)
 ---------------------------------
 

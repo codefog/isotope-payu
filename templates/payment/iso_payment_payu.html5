@@ -1,0 +1,29 @@
+<h2><?php echo $this->headline; ?></h2>
+<p class="message"><?php echo $this->message; ?></p>
+<form id="payu<?php echo $this->id; ?>" action="https://www.platnosci.pl/paygw/UTF/NewPayment" method="post">
+<?php if ($this->debug): ?><input type="hidden" name="pay_type" value="t"><?php endif; ?>
+<input type="hidden" name="pos_id" value="<?php echo $this->payu_id; ?>">
+<input type="hidden" name="pos_auth_key" value="<?php echo $this->payu_authKey; ?>">
+<input type="hidden" name="session_id" value="<?php echo $this->session_id; ?>">
+<input type="hidden" name="ts" value="<?php echo $this->ts; ?>">
+<input type="hidden" name="sig" value="<?php echo $this->sig; ?>">
+<input type="hidden" name="client_ip" value="<?php echo $this->ip; ?>">
+<input type="hidden" name="order_id" value="<?php echo $this->order_id; ?>">
+<input type="hidden" name="amount" value="<?php echo $this->amount; ?>">
+<input type="hidden" name="desc" value="<?php echo $this->desc; ?>">
+<input type="hidden" name="first_name" value="<?php echo $this->address->firstname; ?>">
+<input type="hidden" name="last_name" value="<?php echo $this->address->lastname; ?>">
+<input type="hidden" name="email" value="<?php echo $this->address->email; ?>">
+<input type="hidden" name="street" value="<?php echo $this->address->street_1; ?>">
+<input type="hidden" name="post_code" value="<?php echo $this->address->postal; ?>">
+<input type="hidden" name="city" value="<?php echo $this->address->city; ?>">
+<input type="hidden" name="country" value="<?php echo $this->address->country; ?>">
+<input type="hidden" name="phone" value="<?php echo $this->address->phone; ?>">
+<input type="hidden" name="language" value="<?php echo $this->language; ?>">
+<noscript>
+<input type="submit" value="<?php echo $this->slabel; ?>">
+</noscript>
+</form>
+<script>
+document.getElementById('payu<?php echo $this->id; ?>').submit();
+</script>
