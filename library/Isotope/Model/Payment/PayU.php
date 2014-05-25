@@ -81,7 +81,7 @@ class PayU extends Postsale implements IsotopePayment
                     {
                         if (!$objOrder->checkout())
                         {
-                            $this->log('PayU checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+                            \System::log('PayU checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
                             die('OK');
                         }
 
@@ -93,12 +93,12 @@ class PayU extends Postsale implements IsotopePayment
                         $objOrder->updateOrderStatus($this->new_order_status);
                         $objOrder->save();
 
-                        $this->log('PayU data accepted for order ID ' . $objOrder->id . ' (status: ' . $arrResponse['trans_status'] . ')', __METHOD__, TL_GENERAL);
+                        \System::log('PayU data accepted for order ID ' . $objOrder->id . ' (status: ' . $arrResponse['trans_status'] . ')', __METHOD__, TL_GENERAL);
                     }
                 }
                 else
                 {
-                    $this->log('PayU could not connect to server', __METHOD__, TL_ERROR);
+                    \System::log('PayU could not connect to server', __METHOD__, TL_ERROR);
                 }
             }
         }
