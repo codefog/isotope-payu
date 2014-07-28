@@ -114,7 +114,14 @@ class PayU extends Postsale implements IsotopePayment
     public function getPostsaleOrder()
     {
         $session_id = explode('_', \Input::post('session_id'));
-        return Order::findByPk($session_id[0]);
+        $objOrder = Order::findByPk($session_id[0]);
+
+        if ($objOrder === null || !($objOrder instanceof IsotopeProductCollection)) {
+            \System::log('Order ' . $session_id . ' not found', __METHOD__, TL_ERROR);
+            die('OK');
+        }
+
+        return $objOrder;
     }
 
 
