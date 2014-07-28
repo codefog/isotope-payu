@@ -6,6 +6,7 @@ Version 2.0.1 stable (2014-07-28)
 
 ### Fixed
 - Display the "OK" message if the order is not found
+- Use static method to log messages (see #2)
 
 
 Version 2.0.0 stable (2013-12-27)
