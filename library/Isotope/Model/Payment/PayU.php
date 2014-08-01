@@ -81,7 +81,7 @@ class PayU extends Postsale implements IsotopePayment
                     {
                         if (!$objOrder->checkout())
                         {
-                            $this->log('PayU checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+                            \System::log('PayU checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
                             die('OK');
                         }
 
@@ -93,12 +93,12 @@ class PayU extends Postsale implements IsotopePayment
                         $objOrder->updateOrderStatus($this->new_order_status);
                         $objOrder->save();
 
-                        $this->log('PayU data accepted for order ID ' . $objOrder->id . ' (status: ' . $arrResponse['trans_status'] . ')', __METHOD__, TL_GENERAL);
+                        \System::log('PayU data accepted for order ID ' . $objOrder->id . ' (status: ' . $arrResponse['trans_status'] . ')', __METHOD__, TL_GENERAL);
                     }
                 }
                 else
                 {
-                    $this->log('PayU could not connect to server', __METHOD__, TL_ERROR);
+                    \System::log('PayU could not connect to server', __METHOD__, TL_ERROR);
                 }
             }
         }
@@ -114,7 +114,14 @@ class PayU extends Postsale implements IsotopePayment
     public function getPostsaleOrder()
     {
         $session_id = explode('_', \Input::post('session_id'));
-        return Order::findByPk($session_id[0]);
+        $objOrder = Order::findByPk($session_id[0]);
+
+        if ($objOrder === null || !($objOrder instanceof IsotopeProductCollection)) {
+            \System::log('Order ' . $session_id . ' not found', __METHOD__, TL_ERROR);
+            die('OK');
+        }
+
+        return $objOrder;
     }
 
 
