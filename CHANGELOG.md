@@ -1,7 +1,7 @@
 isotope_payu Changelog
 ======================
 
-Version 2.0.1 stable (2014-07-28)
+Version 2.0.1 stable (2014-08-01)
 ---------------------------------
 
 ### Fixed
