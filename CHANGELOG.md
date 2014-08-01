@@ -1,6 +1,14 @@
 isotope_payu Changelog
 ======================
 
+Version 2.0.1 stable (2014-08-01)
+---------------------------------
+
+### Fixed
+- Display the "OK" message if the order is not found
+- Use static method to log messages (see #2)
+
+
 Version 2.0.0 stable (2013-12-27)
 ---------------------------------
 
