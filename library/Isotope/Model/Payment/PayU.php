@@ -157,7 +157,7 @@ class PayU extends Postsale implements IsotopePayment
                 $strOptions = ' (' . implode(', ', $options) . ')';
             }
 
-            $arrProducts[] = specialchars($objItem->getName() . $strOptions);
+            $arrProducts[] = $objItem->getName() . $strOptions;
         }
 
         $time = time();
@@ -174,7 +174,7 @@ class PayU extends Postsale implements IsotopePayment
         $objTemplate->ts = $time;
         $objTemplate->amount = $intPrice;
         $objTemplate->session_id = $strSessionId;
-        $objTemplate->desc = $strProducts;
+        $objTemplate->desc = specialchars($strProducts);
         $objTemplate->sig = md5($this->payu_id . ($this->debug ? 't' : '') . $strSessionId . $this->payu_authKey . $intPrice . $strProducts . $objOrder->uniqid . $objAddress->firstname . $objAddress->lastname . $objAddress->street_1 . $objAddress->city . $objAddress->postal . $objAddress->country . $objAddress->email . $objAddress->phone . $GLOBALS['TL_LANGUAGE'] . \Environment::get('ip') . $time . $this->payu_key1);
         $objTemplate->ip = \Environment::get('ip');
         $objTemplate->language = $GLOBALS['TL_LANGUAGE'];
