@@ -1,6 +1,13 @@
 isotope_payu Changelog
 ======================
 
+Version 2.0.3 stable (2014-08-21)
+---------------------------------
+
+### Fixed
+- Fixed the bug with special characters in product names
+
+
 Version 2.0.2 stable (2014-08-05)
 ---------------------------------
 
