@@ -133,38 +133,11 @@ class PayU extends Postsale implements IsotopePayment
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $arrProducts = array();
-
-        foreach ($objOrder->getItems() as $objItem)
-        {
-            // Set the active product for insert tags replacement
-            Product::setActive($objItem->getProduct());
-
-            $strOptions = '';
-            $arrOptions = Isotope::formatOptions($objItem->getOptions());
-
-            Product::unsetActive();
-
-            if (!empty($arrOptions))
-            {
-                $options = array();
-
-                foreach ($arrOptions as $option)
-                {
-                    $options[] = $option['label'] . ': ' . $option['value'];
-                }
-
-                $strOptions = ' (' . implode(', ', $options) . ')';
-            }
-
-            $arrProducts[] = $objItem->getName() . $strOptions;
-        }
-
         $time = time();
         $strSessionId = $objOrder->id . '_' . uniqid();
         $objAddress = $objOrder->getBillingAddress();
         $intPrice = (round($objOrder->getTotal(), 2) * 100);
-        $strProducts = implode(', ', $arrProducts);
+        $strDescription = sprintf($GLOBALS['TL_LANG']['MSC']['payu_order'], $objOrder->uniqid);
 
         $objTemplate = new \Isotope\Template('iso_payment_payu');
         $objTemplate->setData($this->arrData);
@@ -174,8 +147,8 @@ class PayU extends Postsale implements IsotopePayment
         $objTemplate->ts = $time;
         $objTemplate->amount = $intPrice;
         $objTemplate->session_id = $strSessionId;
-        $objTemplate->desc = specialchars($strProducts);
-        $objTemplate->sig = md5($this->payu_id . ($this->debug ? 't' : '') . $strSessionId . $this->payu_authKey . $intPrice . $strProducts . $objOrder->uniqid . $objAddress->firstname . $objAddress->lastname . $objAddress->street_1 . $objAddress->city . $objAddress->postal . $objAddress->country . $objAddress->email . $objAddress->phone . $GLOBALS['TL_LANGUAGE'] . \Environment::get('ip') . $time . $this->payu_key1);
+        $objTemplate->desc = specialchars($strDescription);
+        $objTemplate->sig = md5($this->payu_id . ($this->debug ? 't' : '') . $strSessionId . $this->payu_authKey . $intPrice . $strDescription . $objOrder->uniqid . $objAddress->firstname . $objAddress->lastname . $objAddress->street_1 . $objAddress->city . $objAddress->postal . $objAddress->country . $objAddress->email . $objAddress->phone . $GLOBALS['TL_LANGUAGE'] . \Environment::get('ip') . $time . $this->payu_key1);
         $objTemplate->ip = \Environment::get('ip');
         $objTemplate->language = $GLOBALS['TL_LANGUAGE'];
         $objTemplate->address = $objAddress;

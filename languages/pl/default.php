@@ -21,4 +21,5 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.payu'] = array('PayU', 'Płatności
 /**
  * Miscellaneous
  */
+$GLOBALS['TL_LANG']['MSC']['payu_order']    = 'Zamówienie nr %s';
 $GLOBALS['TL_LANG']['MSC']['pay_with_payu'] = array('Zapłać przez PayU', 'Zostaniesz przekierowany na stronę PayU, gdzie możesz dokonać transakcji. Jeśli nie jesteś automatycznie przekierowany, kliknij przycisk "Zapłać teraz".', 'Zapłać teraz');
