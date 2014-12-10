@@ -1,6 +1,13 @@
 isotope_payu Changelog
 ======================
 
+Version 2.0.4 stable (2014-??-??)
+---------------------------------
+
+### Fixed
+- The products are no longer sent in the payment description
+
+
 Version 2.0.3 stable (2014-08-21)
 ---------------------------------
 
