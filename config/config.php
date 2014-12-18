@@ -16,7 +16,7 @@
  * Extension version
  */
 @define('ISOTOPE_PAYU_VERSION', '2.0');
-@define('ISOTOPE_PAYU_BUILD', '4');
+@define('ISOTOPE_PAYU_BUILD', '5');
 
 
 /**

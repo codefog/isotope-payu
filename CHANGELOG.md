@@ -1,6 +1,14 @@
 isotope_payu Changelog
 ======================
 
+Version 2.0.5 stable (2014-12-18)
+---------------------------------
+
+### Fixed
+- Added the composer.json file
+- Updated the readme file
+
+
 Version 2.0.4 stable (2014-12-10)
 ---------------------------------
 
